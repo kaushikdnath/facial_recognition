@@ -1,4 +1,6 @@
-docker build -t face_recognition .
+#docker build -t face_recognition .
+
+docker pull kaushikdnath/face_recognition:latest
 
 docker run --rm --name face_recog_container -it -v %cd%:/app face_recognition
 
