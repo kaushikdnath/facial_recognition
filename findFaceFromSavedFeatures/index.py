@@ -1,11 +1,17 @@
 import face_recognition
 import pickle
+import sys
 
-with open("face_encodings.pkl", "rb") as f:
+features_file="storage/face_encodings.pkl"
+if len(sys.argv)==1:
+    print(f"Please provide search image as parameter.")
+    exit()
+
+with open(features_file, "rb") as f:
     known_encodings = pickle.load(f)
 
 # Compare a new face
-new_image = face_recognition.load_image_file("random.jpg")
+new_image = face_recognition.load_image_file(sys.argv[1])
 new_encoding = face_recognition.face_encodings(new_image)[0]
 
 for name, encoding in known_encodings.items():

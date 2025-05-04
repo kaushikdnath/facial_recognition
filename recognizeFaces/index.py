@@ -2,7 +2,7 @@ import face_recognition
 import cv2
 
 # Load the image
-image = face_recognition.load_image_file("image.jpg")
+image = face_recognition.load_image_file("storage/image.jpg")
 
 # Find all face locations
 face_locations = face_recognition.face_locations(image)
@@ -21,6 +21,6 @@ for top, right, bottom, left in face_locations:
 # cv2.destroyAllWindows()
 
 # Save the result to a file
-cv2.imwrite("output.jpg", image_bgr)
+cv2.imwrite("storage/output.jpg", image_bgr)
 
 print(f"Detected {len(face_locations)} face(s). Output saved to output.jpg.")
