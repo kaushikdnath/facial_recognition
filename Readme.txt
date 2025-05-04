@@ -10,8 +10,9 @@ docker run --rm --name face_recog_container -it -v %cd%:/app --add-host=host.doc
 --add-host=host.docker.internal:host-gateway --container resolve to the host machine's IP, so your app can connect to DB
 
 
-#generate Facial Features from "storage/images" folder
+# Generate Facial Features from "storage/images" folder
 python generateAndSaveFacialFeatures/FromDisk/index.py
 
 # Search image for match 
 python findFaceFromSavedFeatures/index.py "storage/images/6.JPG"
+

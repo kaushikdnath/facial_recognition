@@ -4,7 +4,7 @@ import pickle
 from pathlib import Path
 import cv2
 
-image_folder="storage/images"
+image_folder="storage/MAMPI DY marriage"
 features_file="storage/face_encodings.pkl"
     
 def preprocess_image(image_path, max_width=800):

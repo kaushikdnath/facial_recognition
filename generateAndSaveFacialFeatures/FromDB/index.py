@@ -44,14 +44,14 @@ def preprocess_image(image_bytes, max_width=800):
         return None
 
 
-cursor = conn.cursor()
+cursor = conn.cursor(name='stream_cursor')  # Named cursor = server-side cursor
 
 cursor.execute("SELECT id, name, photo FROM Face_Images")
-rows = cursor.fetchall()
 
 encodings_dict = {}
-
-for row in rows:
+print(f"here")
+for row in cursor:
+    print(f"here")
     id, name, photo_data = row
     if photo_data is None:
         continue
@@ -65,13 +65,14 @@ for row in rows:
     if not face_locations:
         print(f"No face found in image for {name} (ID: {id})")
         continue
+
     print(f"Encoding for {name} (ID: {id})")
     encodings = face_recognition.face_encodings(rgb_image, known_face_locations=face_locations)
     if encodings:
-        encodings_dict[name] = encodings[0]  # Store first face only
-
-# --- Save encodings to file ---
-with open(features_file, "wb") as f:
-    pickle.dump(encodings_dict, f)
+        encodings_dict[name] = encodings[0]
+        # Save after each successful encoding
+        with open(encodings_file, "wb") as f:
+            pickle.dump(encodings_dict, f)
+        print(f"Saved encoding for {name} (ID: {id})")
 
 print(f"Saved {len(encodings_dict)} face encodings to face_encodings.pkl")
