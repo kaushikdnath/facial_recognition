@@ -1,7 +1,7 @@
 # import pyodbc #for MSSQL pip install pyodbc
 import psycopg2 #for postgres and pip install psycopg2-binary
 import face_recognition
-import pickle
+import shelve
 import numpy as np
 import cv2
 import io
@@ -45,34 +45,30 @@ def preprocess_image(image_bytes, max_width=800):
 
 
 cursor = conn.cursor(name='stream_cursor')  # Named cursor = server-side cursor
-
+cursor.itersize = 1
 cursor.execute("SELECT id, name, photo FROM Face_Images")
 
 encodings_dict = {}
-print(f"here")
-for row in cursor:
-    print(f"here")
-    id, name, photo_data = row
-    if photo_data is None:
-        continue
+print(f"checkpoint 1")
+with shelve.open("storage/face_encodings.db") as db:
+    for row in cursor:
+        id, name, photo_data = row
+        if photo_data is None or name in db:
+            continue
 
-    rgb_image = preprocess_image(photo_data)
-    if rgb_image is None:
-        print(f"Failed to process image for {name} (ID: {id})")
-        continue
+        rgb_image = preprocess_image(photo_data)
+        if rgb_image is None:
+            print(f"Failed to process image for {name} (ID: {id})")
+            continue
 
-    face_locations = face_recognition.face_locations(rgb_image, model='hog')
-    if not face_locations:
-        print(f"No face found in image for {name} (ID: {id})")
-        continue
+        face_locations = face_recognition.face_locations(rgb_image, model='hog')
+        if not face_locations:
+            print(f"No face found in image for {name} (ID: {id})")
+            continue
 
-    print(f"Encoding for {name} (ID: {id})")
-    encodings = face_recognition.face_encodings(rgb_image, known_face_locations=face_locations)
-    if encodings:
-        encodings_dict[name] = encodings[0]
-        # Save after each successful encoding
-        with open(encodings_file, "wb") as f:
-            pickle.dump(encodings_dict, f)
-        print(f"Saved encoding for {name} (ID: {id})")
+        encodings = face_recognition.face_encodings(rgb_image, known_face_locations=face_locations)
+        if encodings:
+            db[name] = encodings[0]
+            print(f"Saved encoding for {name} (ID: {id})")
 
-print(f"Saved {len(encodings_dict)} face encodings to face_encodings.pkl")
+print(f"Saved face encodings to face_encodings.pkl")
