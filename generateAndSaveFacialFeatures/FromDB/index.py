@@ -59,10 +59,10 @@ with shelve.open("storage/face_encodings.db") as db:
         if rgb_image is None:
             print(f"Failed to process image for {name} (ID: {id})")
             continue
-        file_path = os.path.abspath(f"D:/Multimedia/Pictures/MAMPI DY marriage/{name}")
+        file_path = os.path.abspath(f"D:/Multimedia/Pictures/{name}")
         face_locations = face_recognition.face_locations(rgb_image, model='cnn')
         if not face_locations:
-            print(f"No face found in image for {name} (ID: {id}) \033]8;;file://{file_path}\033\\Open File\033]8;;\033\\")
+            print(f"No face found in image for {name} (ID: {id}) file:///D:/Multimedia/Pictures/{name}")
             continue
 
         encodings = face_recognition.face_encodings(rgb_image, known_face_locations=face_locations)

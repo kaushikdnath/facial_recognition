@@ -14,7 +14,7 @@ docker run --rm --name face_recog_container -it -v %cd%:/app --add-host=host.doc
 --add-host=host.docker.internal:host-gateway --container resolve to the host machine's IP, so your app can connect to DB
 
 
-
+#To generate using CPU set model="hog" and model="cnn" for GPU in face_location function
 # Generate Facial Features from "storage/images" folder
 python generateAndSaveFacialFeatures/FromDisk/index.py
 

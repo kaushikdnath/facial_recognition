@@ -35,4 +35,4 @@ matches.sort(key=lambda x: x[1])
 
 print(f"\nTop {top_n} matches:")
 for name, dist in matches[:top_n]:
-    print(f"distance = {dist:.4f}, \"file:///D:/Multimedia/Pictures/MAMPI_Di_Marriage/{name}\"")
+    print(f"distance = {dist:.4f}, \"file:///D:/Multimedia/Pictures/{name}\"")
