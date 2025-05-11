@@ -1,12 +1,16 @@
 
-#To build Dockerfile to create image run "docker build -t face_recognition ."
-
+# To build Dockerfile to create image run "docker build -t face_recognition ."
+# To push to docker 
+# 1st Tag "docker tag <local-image-name>:<tag> <dockerhub-username>/<repository-name>:<tag>"
+# Next 
 #To pull docker image for face_recognition run
-docker pull kaushikdnath/face_recognition:1.0
+docker pull kaushikdnath/face_recognition:latest
+# or if Nvidia GPU based 
+docker pull kaushikdnath/face_recognition:gpu
 
 ## To run the image either execute "run.bat" or for more control execute below command
 
-docker run --rm --name face_recog_container -it -v %cd%:/app --add-host=host.docker.internal:host-gateway kaushikdnath/face_recognition:1.0
+docker run --rm --name face_recog_container -it -v %cd%:/app --add-host=host.docker.internal:host-gateway kaushikdnath/face_recognition:latest
 
 -v %cmd%:/app(${pwd}:/app for linux) — mount current folder to /app inside the container
 -it — interactive terminal

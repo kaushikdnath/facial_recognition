@@ -17,13 +17,9 @@ RUN apt-get update && apt-get install -y \
     && rm -rf /var/lib/apt/lists/*
 
 # Install face_recognition
-RUN pip install face_recognition
-RUN pip install opencv-python-headless
+RUN pip install face_recognition opencv-python-headless psycopg2-binary pyodbc
 
 # Set working directory
 WORKDIR /app
-
-# Copy your app code (optional)
-# COPY . /app
 
 CMD ["bash"]
