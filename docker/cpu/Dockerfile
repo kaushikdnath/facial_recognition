@@ -18,7 +18,7 @@ RUN apt-get update && apt-get install -y \
 
 # Install face_recognition
 RUN pip install face_recognition
-RUN pip install opencv-python
+RUN pip install opencv-python-headless
 
 # Set working directory
 WORKDIR /app
