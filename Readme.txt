@@ -18,6 +18,12 @@ docker run --rm --name face_recog_container -it -v %cd%:/app --add-host=host.doc
 # Generate Facial Features from "storage/images" folder
 python generateAndSaveFacialFeatures/FromDisk/index.py
 
+# Generate Facial Features from DB
+python generateAndSaveFacialFeatures/FromDB/index.py
+
 # Search image for match 
 python findFaceFromSavedFeatures/index.py "storage/images/6.JPG"
+
+# Search image for top-n match 
+python findFaceFromSavedFeatures/top_n.py "storage/images/6.JPG"
 
