@@ -1,25 +1,24 @@
 FROM python:3.10-slim
 
-# Set environment variables
 ENV DEBIAN_FRONTEND=noninteractive
 
-# Install system dependencies
-RUN apt-get update && apt-get install -y \
+# 1. Install system dependencies
+RUN apt-get update && apt-get install -y --no-install-recommends \
     build-essential \
     cmake \
     libopenblas-dev \
-    liblapack-dev \
-    libx11-dev \
-    libgtk-3-dev \
-    libboost-python-dev \
-    python3-dev \
-    git \
-    && rm -rf /var/lib/apt/lists/*
+    liblapack-dev 
 
-# Install face_recognition
-RUN pip install face_recognition opencv-python-headless psycopg2-binary pyodbc
+# 2. Cleanup: remove unnecessary tools and caches
+RUN apt-get purge -y gnupg \
+    && apt-get autoremove -y \
+    && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
-# Set working directory
+# 3. Install Python dependencies
+RUN pip install --no-cache-dir \
+    face_recognition \
+    opencv-python-headless
+
 WORKDIR /app
 
 CMD ["bash"]

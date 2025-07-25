@@ -25,7 +25,7 @@ with shelve.open(features_db) as db:
         known_encoding = db[name]
         results = face_recognition.compare_faces([known_encoding], new_encoding)
         if results[0]:
-            print(f"Match found: \"file:///D:/Multimedia/Pictures/{name}\"")
+            print(f"Match found: {name}")
             match_found = True
             
 

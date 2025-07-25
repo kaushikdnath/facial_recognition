@@ -2,10 +2,10 @@ import face_recognition
 import cv2
 
 # Load the image
-image = face_recognition.load_image_file("storage/image.jpg")
+image = face_recognition.load_image_file("storage/noface/18425058220000126.jpg")
 
 # Find all face locations
-face_locations = face_recognition.face_locations(image)
+face_locations = face_recognition.face_locations(image,model='cnn')
 
 # Get the encodings (unique face features)
 face_encodings = face_recognition.face_encodings(image, face_locations)

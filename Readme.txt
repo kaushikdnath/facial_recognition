@@ -1,12 +1,4 @@
 
-# To build Dockerfile to create image run "docker build -t face_recognition ."
-# To push to docker 
-# 1st Tag "docker tag <local-image-name>:<tag> <dockerhub-username>/<repository-name>:<tag>"
-# Next 
-#To pull docker image for face_recognition run
-docker pull kaushikdnath/face_recognition:latest
-# or if Nvidia GPU based 
-docker pull kaushikdnath/face_recognition:gpu
 
 ## To run the image either execute "run.bat" or for more control execute below command
 
@@ -22,8 +14,8 @@ docker run --rm --name face_recog_container -it -v %cd%:/app --add-host=host.doc
 # Generate Facial Features from "storage/images" folder
 python generateAndSaveFacialFeatures/FromDisk/index.py
 
-# Generate Facial Features from DB
-python generateAndSaveFacialFeatures/FromDB/index.py
+# Generate Facial Features from DB (run install_Db_drivers.sh)
+PYTHONUNBUFFERED=1 python generateAndSaveFacialFeatures/FromDB/index.py 2>&1 | tee storage/log.txt
 
 # Search image for match 
 python findFaceFromSavedFeatures/index.py "storage/images/6.JPG"
@@ -31,3 +23,13 @@ python findFaceFromSavedFeatures/index.py "storage/images/6.JPG"
 # Search image for top-n match 
 python findFaceFromSavedFeatures/top_n.py "storage/images/6.JPG"
 
+
+# To build Dockerfile to create image run "docker build -t face_recognition ."
+
+# To push to docker 
+# 1st Tag "docker tag <local-image-name>:<tag> <dockerhub-username>/<repository-name>:<tag>"
+# Next 
+#To pull docker image for face_recognition run
+docker pull kaushikdnath/face_recognition:latest
+# or if Nvidia GPU based 
+docker pull kaushikdnath/face_recognition:gpu

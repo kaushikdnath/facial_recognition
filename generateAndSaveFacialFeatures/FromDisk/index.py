@@ -1,11 +1,12 @@
 import face_recognition
-import os
-import pickle
+# import os
+# import pickle
 from pathlib import Path
 import cv2
+import shelve
 
-image_folder="storage/MAMPI DY marriage"
-features_file="storage/face_encodings.pkl"
+image_folder="storage/noface"
+features_file="storage/face_encodings.db"
     
 def preprocess_image(image_path, max_width=800):
     image = cv2.imread(image_path)
@@ -18,25 +19,26 @@ def preprocess_image(image_path, max_width=800):
 # Extract facial features
 print(f"Extracting facial features")
 encodings_dict = {}
+with shelve.open(features_file) as db:
+    for image_file in Path(image_folder).glob("*.*"):
+        # Load the image
+        # image = face_recognition.load_image_file(image_file)
+        image = preprocess_image(image_file)
+        # face_encodings = face_recognition.face_encodings(image)
 
-for image_file in Path(image_folder).glob("*.*"):
-    # Load the image
-    # image = face_recognition.load_image_file(image_file)
-    image = preprocess_image(image_file)
-    # face_encodings = face_recognition.face_encodings(image)
+        face_locations = face_recognition.face_locations(image, model='cnn') #cnn for slower but accurate and "hog" for faster performance
+        face_encodings = face_recognition.face_encodings(image, known_face_locations=face_locations)
 
-    face_locations = face_recognition.face_locations(image, model='hog') #cnn for slower but accurate and "hog" for faster performance
-    face_encodings = face_recognition.face_encodings(image, known_face_locations=face_locations)
-
-    if face_encodings:
-        # Take the first face found (you can adapt this for multiple)
-        encodings_dict[image_file.name] = face_encodings[0]
-        print(f"Encoded: {image_file.name}")
-    else:
-        print(f"No face found in: {image_file.name}")
+        if face_encodings:
+            # Take the first face found (you can adapt this for multiple)
+            # encodings_dict[image_file.name] = face_encodings[0]
+            db[image_file.name] = face_encodings[0]
+            print(f"Encoded: {image_file.name}")
+        else:
+            print(f"No face found in: {image_file.name}")
 
 # Save all encodings to a file
-with open(features_file, "wb") as f:
-    pickle.dump(encodings_dict, f)
+# with open(features_file, "wb") as f:
+#     pickle.dump(encodings_dict, f)
 print(f"Saved encodings to: {features_file}")
 
